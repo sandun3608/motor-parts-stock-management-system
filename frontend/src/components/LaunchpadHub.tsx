@@ -69,6 +69,15 @@ export const LaunchpadHub: React.FC<LaunchpadHubProps> = ({
 
   const allCards: HubCardItem[] = [
     {
+      id: 'rep',
+      title: 'Sales Rep Portal (ටැබ් / මොබයිල්)',
+      icon: <Truck className="w-9 h-9 text-white" />,
+      gradient: 'linear-gradient(135deg, #059669 0%, #10b981 55%, #34d399 100%)',
+      shadow: '0 14px 28px -6px rgba(16, 185, 129, 0.45)',
+      borderColor: '#34d399',
+      visible: true,
+    },
+    {
       id: 'inventory',
       title: 'Inventory',
       icon: <Package className="w-9 h-9 text-white" />,

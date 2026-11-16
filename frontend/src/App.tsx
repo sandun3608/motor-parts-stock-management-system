@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { PosTerminal } from './pages/PosTerminal';
+import { RepPortal } from './pages/RepPortal';
 import { ProductCatalog } from './pages/ProductCatalog';
 import { InventoryManagement } from './pages/InventoryManagement';
 import { ShiftsPage } from './pages/ShiftsPage';
@@ -169,7 +170,12 @@ export function App() {
       sessionStorage.removeItem('pos_user');
     }
     setIsLocked(false);
-    setIsLaunchpadOpen(true);
+    if (user.role === 'rep') {
+      setActiveTab('rep');
+      setIsLaunchpadOpen(false);
+    } else {
+      setIsLaunchpadOpen(true);
+    }
     localStorage.setItem('pos_locked', 'false');
   };
 
@@ -205,7 +211,7 @@ export function App() {
   useEffect(() => {
     if (!hasModuleAccess(activeTab)) {
       const allTabs: AppModule[] = [
-        'pos', 'wholesale', 'catalog', 'inventory', 'grn', 'customers', 'shifts', 'procurement', 'expenses', 'reports', 'staff', 'settings'
+        'rep', 'pos', 'wholesale', 'catalog', 'inventory', 'grn', 'customers', 'shifts', 'procurement', 'expenses', 'reports', 'staff', 'settings'
       ];
       const fallbackTab = allTabs.find((t) => hasModuleAccess(t)) || 'pos';
       setActiveTab(fallbackTab);
@@ -305,6 +311,13 @@ export function App() {
 
           {/* Main Screen Content */}
           <main className="flex-1 min-w-0 h-full flex flex-col overflow-hidden">
+        {activeTab === 'rep' && (
+          <RepPortal
+            currentUser={currentUser}
+            onBackToPos={() => setActiveTab('pos')}
+          />
+        )}
+
         {activeTab === 'pos' && hasModuleAccess('pos') && (
           <PosTerminal
             settings={settings}

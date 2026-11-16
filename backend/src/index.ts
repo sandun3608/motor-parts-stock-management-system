@@ -13,6 +13,7 @@ import { customersRouter } from './routes/customers';
 import { grnRouter } from './routes/grn';
 import { printerRouter } from './routes/printer';
 import { expensesRouter } from './routes/expenses';
+import { repRouter } from './routes/rep';
 
 dotenv.config();
 
@@ -30,7 +31,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Health Check
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', time: new Date().toISOString(), system: 'Grocery POS API' });
+  res.json({ status: 'ok', time: new Date().toISOString(), system: 'Distribution & POS API' });
 });
 
 // API Routes
@@ -45,6 +46,7 @@ app.use('/api/customers', customersRouter);
 app.use('/api/grn', grnRouter);
 app.use('/api/expenses', expensesRouter);
 app.use('/api/print', printerRouter);
+app.use('/api/rep', repRouter);
 
 // Global Error Handler
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -57,7 +59,7 @@ async function startServer() {
   try {
     await initDatabase();
     app.listen(PORT, () => {
-      console.log(`🚀 Grocery Store POS Backend running on port ${PORT}`);
+      console.log(`🚀 Distribution & POS Backend running on port ${PORT}`);
       console.log(`📡 Health check available at: http://localhost:${PORT}/api/health`);
     });
   } catch (err) {
