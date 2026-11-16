@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -47,6 +48,21 @@ app.use('/api/grn', grnRouter);
 app.use('/api/expenses', expensesRouter);
 app.use('/api/print', printerRouter);
 app.use('/api/rep', repRouter);
+
+// Serve Frontend in Production (Render Single Web Service Deployment)
+const frontendDist = path.join(__dirname, '..', '..', 'frontend', 'dist');
+app.use(express.static(frontendDist));
+app.get('*', (_req, res, next) => {
+  if (_req.path.startsWith('/api')) {
+    return next();
+  }
+  res.sendFile(path.join(frontendDist, 'index.html'), (err) => {
+    if (err) {
+      // If frontend isn't built or served separately
+      next();
+    }
+  });
+});
 
 // Global Error Handler
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
